@@ -10,11 +10,9 @@ import { APP } from './constants';
 const generateOTP = (): number => {
   /**
    * (1.02) TODO:
-   * - Implement this function.
-   * - Make sure tall the tests pass.
-   * - Delete this comment.
+  
    */
-  return 123456;
+  return Math.floor(100000 + Math.random() * 900000);
 };
 
 /**
