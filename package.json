@@ -33,6 +33,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.12",
+    "@types/jest": "^27.0.2",
     "@types/jest-in-case": "^1.0.3",
     "@types/jsonwebtoken": "^8.5.4",
     "@types/multer": "^1.4.7",
