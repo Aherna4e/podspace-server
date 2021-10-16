@@ -40,7 +40,7 @@ const authCodeSchema: Schema<AuthCodeDocument> = new Schema<AuthCodeDocument>(
   {
     // Here's an example of how to add a field to the schema.
     phoneNumber: { required: true, type: String, unique: true },
-    value: { default: AuthUtils.generateOTP, type: Number }
+    value: { default: AuthUtils.generateOTP, required: true, type: Number }
   },
   { timestamps: true }
 );
@@ -54,6 +54,7 @@ const authCodeSchema: Schema<AuthCodeDocument> = new Schema<AuthCodeDocument>(
  * - Once you find something, add the code to this document and include a link
  * to the code you found in a comment.
  * */
+authCodeSchema.index({ createdAt: 1 }, { expiredAfterSeconds: 60 * 5 });
 
 const AuthCode: mongoose.Model<AuthCodeDocument> =
   mongoose.model<AuthCodeDocument>(Model.AUTH_CODE, authCodeSchema);

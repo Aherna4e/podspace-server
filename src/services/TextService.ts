@@ -31,7 +31,7 @@ type SendTextArgs = {
 const sendText = async ({ message, to }: SendTextArgs): Promise<boolean> => {
   // Don't send texts unless it is production environment. If you want texts
   // to send while in development, simply comment out this line.
-  // if (!APP.IS_PRODUCTION) return true;
+  if (!APP.IS_PRODUCTION) return true;
 
   /**
    * TODO: (6.03)
@@ -40,7 +40,13 @@ const sendText = async ({ message, to }: SendTextArgs): Promise<boolean> => {
 
   try {
     // Send the text
+    await client.messages.create({
+      body: message,
+      from: APP.TWILIO_PHONE_NUMBER,
+      to
+    });
   } catch (e) {
+    return false;
     // What should be return if sending the text was unsuccessful?
   }
 

@@ -12,7 +12,11 @@ const generateOTP = (): number => {
    * (1.02) TODO:
   
    */
-  return Math.floor(100000 + Math.random() * 900000);
+  const randomFraction: number = Math.random();
+  const sixDigitNumber: number = randomFraction * 900000;
+  const sixDigitWholeNumber: number = Math.floor(sixDigitNumber);
+  return sixDigitWholeNumber + 100000;
+  //return Math.floor(100000 + Math.random() * 900000);
 };
 
 /**

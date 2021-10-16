@@ -6,6 +6,7 @@ import { BaseModel, ID } from '../utils/types';
 import { CommentDocument } from './Comment';
 import { ReactionDocument } from './Reaction';
 import User, { UserDocument } from './User';
+import User from './User';
 
 /**
  * TODO: (3.01)
@@ -55,14 +56,9 @@ export type PostDocument = Document<{}, {}, IPost> & IPost;
 
 const postSchema: Schema<PostDocument> = new Schema<PostDocument>(
   {
-    /**
-     * TODO: (3.03)
-     * - Create the schema for the Posts that we'll save in the database using
-     * the interface above as a reference.
-     * - Delete this comment and the example field.
-     * - Add comment(s) to explain your work.
-     */
-    exampleField: { required: true, type: String }
+    author: { ref: Model.USER, required: true, type: ID },
+    content: { required: true, type: String },
+    type: { required: false, type: String }
   },
   {
     timestamps: true,
@@ -74,11 +70,17 @@ const postSchema: Schema<PostDocument> = new Schema<PostDocument>(
 const sendNotification = async function (
   author: PopulatedDoc<UserDocument, {} & string>
 ) {
-  /**
-   * TODO: (6.04)
-   * - Send a text to all the users except for the author of this post letting
-   * them know that their podmate shared an update!
-   */
+
+  const allUsers: UserDocuments[] = await.find();
+  allUsers.map((user) =>{
+    if (user !== author){
+      TextService.sendText({
+      message:'One of your podmates shared an update!',
+      to: user.phoneNumber
+    });
+
+    }
+  });
 };
 
 postSchema.pre('save', function () {
