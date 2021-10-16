@@ -39,18 +39,27 @@ const commentSchema: Schema<CommentDocument> = new Schema<CommentDocument>(
      * - Delete this comment and the example field.
      * - Add comment(s) to explain your work.
      */
-    exampleField: { ref: Model.USER, required: false, type: ID, unique: false }
+    author: { red: Model.USER, required: true, type: ID },
+    content: { required: true, type: String },
+    post: { ref: Model.POST, required: true, type: ID }
   },
   { timestamps: true }
 );
 
 commentSchema.pre('save', function () {
+  /**
+   * TODO: (6.05)
+   * - Send a text to the author of the post notifying them that a podmate
+   * commented under it!
+   */
   if (this.isNew) {
-    /**
-     * TODO: (6.05)
-     * - Send a text to the author of the post notifying them that a podmate
-     * commented under it!
-     */
+    const post: PostDocument = await Post.findById(this.post);
+    const postAuthor: UserDocument = await User.findByID(post.author);
+
+    TextService.sendText({
+      message: 'One of your podmates commented on your post!',
+      to: postAuthor.phoneNumber
+    });
   }
 });
 
